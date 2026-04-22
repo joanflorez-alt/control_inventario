@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Control de Inventario{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+
+{% if user.is_authenticated %}
+<nav>
+  <div class="nav-brand">📦 Inventario</div>
+  <ul>
+    <li><a href="{% url 'inventario:dashboard' %}">Dashboard</a></li>
+    <li><a href="{% url 'inventario:productos' %}">Productos</a></li>
+    <li><a href="{% url 'inventario:categorias' %}">Categorías</a></li>
+    <li><a href="{% url 'inventario:inventario' %}">Inventario</a></li>
+    <li><a href="{% url 'inventario:movimientos' %}">Movimientos</a></li>
+    <li><a href="{% url 'inventario:acciones' %}">Acciones</a></li>
+  </ul>
+  <div class="nav-user">
+    {{ user.username }} |
+    <a href="{% url 'inventario:logout' %}">Cerrar sesión</a>
+  </div>
+</nav>
+{% endif %}
+
+<main>
+  {% if messages %}
+    {% for msg in messages %}
+      <div class="alerta alerta-{{ msg.tags }}">{{ msg }}</div>
+    {% endfor %}
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends 'inventario/base.html' %}
+{% block title %}Categorías{% endblock %}
+
+{% block content %}
+<div class="cabecera-seccion">
+  <h2>Categorías</h2>
+  <a href="{% url 'inventario:categoria_crear' %}" class="btn btn-primario">+ Nueva categoría</a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cat in categorias %}
+    <tr>
+      <td>{{ cat.nombre }}</td>
+      <td>{{ cat.descripcion|default:"—" }}</td>
+      <td>
+        <a href="{% url 'inventario:categoria_editar' cat.pk %}" class="btn btn-sm">Editar</a>
+        <a href="{% url 'inventario:categoria_eliminar' cat.pk %}" class="btn btn-sm btn-peligro">Eliminar</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No hay categorías registradas.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

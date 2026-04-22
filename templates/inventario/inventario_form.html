@@ -1,0 +1,22 @@
+{% extends 'inventario/base.html' %}
+{% block title %}Editar inventario{% endblock %}
+
+{% block content %}
+<h2>Editar inventario — {{ inv.producto.nombre }}</h2>
+
+<form method="post" class="formulario">
+  {% csrf_token %}
+  <div class="campo">
+    <label>Cantidad actual</label>
+    <input type="number" name="cantidad_actual" value="{{ inv.cantidad_actual }}" min="0" required>
+  </div>
+  <div class="campo">
+    <label>Stock mínimo</label>
+    <input type="number" name="stock_minimo" value="{{ inv.stock_minimo }}" min="0" required>
+  </div>
+  <div class="acciones-form">
+    <button type="submit" class="btn btn-primario">Guardar</button>
+    <a href="{% url 'inventario:inventario' %}" class="btn">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

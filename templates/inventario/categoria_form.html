@@ -1,0 +1,22 @@
+{% extends 'inventario/base.html' %}
+{% block title %}{% if categoria %}Editar{% else %}Nueva{% endif %} categoría{% endblock %}
+
+{% block content %}
+<h2>{% if categoria %}Editar categoría{% else %}Nueva categoría{% endif %}</h2>
+
+<form method="post" class="formulario">
+  {% csrf_token %}
+  <div class="campo">
+    <label>Nombre *</label>
+    <input type="text" name="nombre" value="{{ categoria.nombre|default:'' }}" required autofocus>
+  </div>
+  <div class="campo">
+    <label>Descripción</label>
+    <textarea name="descripcion">{{ categoria.descripcion|default:'' }}</textarea>
+  </div>
+  <div class="acciones-form">
+    <button type="submit" class="btn btn-primario">Guardar</button>
+    <a href="{% url 'inventario:categorias' %}" class="btn">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

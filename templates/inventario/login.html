@@ -1,0 +1,25 @@
+{% extends 'inventario/base.html' %}
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <h2>Iniciar sesión</h2>
+  {% if messages %}
+    {% for msg in messages %}
+      <div class="alerta alerta-error">{{ msg }}</div>
+    {% endfor %}
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="campo">
+      <label>Usuario</label>
+      <input type="text" name="username" required autofocus>
+    </div>
+    <div class="campo">
+      <label>Contraseña</label>
+      <input type="password" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primario">Ingresar</button>
+  </form>
+</div>
+{% endblock %}

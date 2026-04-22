@@ -1,0 +1,17 @@
+{% extends 'inventario/base.html' %}
+{% block title %}Confirmar eliminación{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <h2>¿Eliminar {{ tipo }}?</h2>
+  <p>Estás a punto de eliminar: <strong>{{ objeto }}</strong></p>
+  <p>Esta acción no se puede deshacer.</p>
+  <form method="post">
+    {% csrf_token %}
+    <div class="acciones-form">
+      <button type="submit" class="btn btn-peligro">Sí, eliminar</button>
+      <a href="javascript:history.back()" class="btn">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'inventario/base.html' %}
+{% block title %}Inventario{% endblock %}
+
+{% block content %}
+<h2>Estado del inventario</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Categoría</th>
+      <th>Cantidad actual</th>
+      <th>Stock mínimo</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for inv in inventarios %}
+    <tr {% if inv.tiene_stock_bajo %}class="fila-alerta"{% endif %}>
+      <td>{{ inv.producto.nombre }}</td>
+      <td>{{ inv.producto.categoria.nombre|default:"—" }}</td>
+      <td>{{ inv.cantidad_actual }}</td>
+      <td>{{ inv.stock_minimo }}</td>
+      <td>
+        {% if inv.tiene_stock_bajo %}
+          ⚠️ Stock bajo
+        {% else %}
+          ✅ OK
+        {% endif %}
+      </td>
+      <td>
+        <a href="{% url 'inventario:inventario_editar' inv.pk %}" class="btn btn-sm">Editar</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No hay registros de inventario.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'inventario/base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Panel principal</h2>
+
+<div class="tarjetas">
+  <div class="tarjeta">
+    <span class="numero">{{ total_productos }}</span>
+    <span class="etiqueta">Productos</span>
+  </div>
+  <div class="tarjeta">
+    <span class="numero">{{ total_categorias }}</span>
+    <span class="etiqueta">Categorías</span>
+  </div>
+  <div class="tarjeta alerta-stock">
+    <span class="numero">{{ alertas.count }}</span>
+    <span class="etiqueta">Stock bajo</span>
+  </div>
+</div>
+
+{% if alertas %}
+<h3>⚠️ Productos con stock bajo</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Cantidad actual</th>
+      <th>Stock mínimo</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for inv in alertas %}
+    <tr class="fila-alerta">
+      <td>{{ inv.producto.nombre }}</td>
+      <td>{{ inv.cantidad_actual }}</td>
+      <td>{{ inv.stock_minimo }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<h3>Últimos movimientos</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Tipo</th>
+      <th>Cantidad</th>
+      <th>Usuario</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for mov in movimientos_recientes %}
+    <tr>
+      <td>{{ mov.producto.nombre }}</td>
+      <td>{{ mov.tipo }}</td>
+      <td>{{ mov.cantidad }}</td>
+      <td>{{ mov.usuario }}</td>
+      <td>{{ mov.fecha|date:"d/m/Y H:i" }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">Sin movimientos registrados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

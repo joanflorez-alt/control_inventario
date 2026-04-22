@@ -1,0 +1,58 @@
+{% extends 'inventario/base.html' %}
+{% block title %}Productos{% endblock %}
+
+{% block content %}
+<div class="cabecera-seccion">
+  <h2>Productos</h2>
+  <a href="{% url 'inventario:producto_crear' %}" class="btn btn-primario">+ Nuevo producto</a>
+</div>
+
+<form method="get" class="buscador">
+  <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nombre o código...">
+  <select name="categoria">
+    <option value="">Todas las categorías</option>
+    {% for cat in categorias %}
+      <option value="{{ cat.id }}" {% if categoria_id == cat.id|stringformat:"s" %}selected{% endif %}>
+        {{ cat.nombre }}
+      </option>
+    {% endfor %}
+  </select>
+  <button type="submit" class="btn">Buscar</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Imagen</th>
+      <th>Nombre</th>
+      <th>Categoría</th>
+      <th>Precio</th>
+      <th>Código</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in productos %}
+    <tr>
+      <td>
+        {% if p.imagen %}
+          <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}" width="50">
+        {% else %}
+          —
+        {% endif %}
+      </td>
+      <td>{{ p.nombre }}</td>
+      <td>{{ p.categoria.nombre|default:"—" }}</td>
+      <td>${{ p.precio }}</td>
+      <td>{{ p.codigo_barras|default:"—" }}</td>
+      <td>
+        <a href="{% url 'inventario:producto_editar' p.pk %}" class="btn btn-sm">Editar</a>
+        <a href="{% url 'inventario:producto_eliminar' p.pk %}" class="btn btn-sm btn-peligro">Eliminar</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No hay productos registrados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

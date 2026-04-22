@@ -1,0 +1,49 @@
+{% extends 'inventario/base.html' %}
+{% block title %}{% if producto %}Editar{% else %}Nuevo{% endif %} producto{% endblock %}
+
+{% block content %}
+<h2>{% if producto %}Editar producto{% else %}Nuevo producto{% endif %}</h2>
+
+<form method="post" enctype="multipart/form-data" class="formulario">
+  {% csrf_token %}
+  <div class="campo">
+    <label>Nombre *</label>
+    <input type="text" name="nombre" value="{{ producto.nombre|default:'' }}" required>
+  </div>
+  <div class="campo">
+    <label>Descripción</label>
+    <textarea name="descripcion">{{ producto.descripcion|default:'' }}</textarea>
+  </div>
+  <div class="campo">
+    <label>Código de barras</label>
+    <input type="text" name="codigo_barras" value="{{ producto.codigo_barras|default:'' }}">
+  </div>
+  <div class="campo">
+    <label>Precio *</label>
+    <input type="number" name="precio" step="0.01" value="{{ producto.precio|default:'' }}" required>
+  </div>
+  <div class="campo">
+    <label>Categoría</label>
+    <select name="categoria">
+      <option value="">Sin categoría</option>
+      {% for cat in categorias %}
+        <option value="{{ cat.id }}"
+          {% if producto.categoria_id == cat.id %}selected{% endif %}>
+          {{ cat.nombre }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="campo">
+    <label>Imagen</label>
+    {% if producto.imagen %}
+      <img src="{{ producto.imagen.url }}" width="80"><br>
+    {% endif %}
+    <input type="file" name="imagen" accept="image/*">
+  </div>
+  <div class="acciones-form">
+    <button type="submit" class="btn btn-primario">Guardar</button>
+    <a href="{% url 'inventario:productos' %}" class="btn">Cancelar</a>
+  </div>
+</form>
+{% endblock %}
