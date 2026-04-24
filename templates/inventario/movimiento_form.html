@@ -2,37 +2,67 @@
 {% block title %}Nuevo movimiento{% endblock %}
 
 {% block content %}
-<h2>Registrar movimiento de inventario</h2>
+<div class="d-flex align-items-center gap-3 mb-4">
+  <a href="{% url 'inventario:movimientos' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i>
+  </a>
+  <div>
+    <h4 class="fw-bold mb-0">Registrar movimiento</h4>
+    <p class="text-muted small mb-0">Entrada o salida de productos del inventario</p>
+  </div>
+</div>
 
-<form method="post" class="formulario">
-  {% csrf_token %}
-  <div class="campo">
-    <label>Producto *</label>
-    <select name="producto" required>
-      <option value="">Selecciona un producto</option>
-      {% for p in productos %}
-        <option value="{{ p.id }}">{{ p.nombre }}</option>
-      {% endfor %}
-    </select>
+<div class="row">
+  <div class="col-lg-5">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Producto <span class="text-danger">*</span></label>
+            <select name="producto" class="form-select" required>
+              <option value="">Selecciona un producto</option>
+              {% for p in productos %}
+                <option value="{{ p.id }}">{{ p.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Tipo de movimiento <span class="text-danger">*</span></label>
+            <div class="row g-2">
+              <div class="col-6">
+                <input type="radio" class="btn-check" name="tipo" id="entrada" value="entrada" checked>
+                <label class="btn btn-outline-success w-100" for="entrada">
+                  <i class="bi bi-arrow-down-circle me-1"></i>Entrada
+                </label>
+              </div>
+              <div class="col-6">
+                <input type="radio" class="btn-check" name="tipo" id="salida" value="salida">
+                <label class="btn btn-outline-danger w-100" for="salida">
+                  <i class="bi bi-arrow-up-circle me-1"></i>Salida
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Cantidad <span class="text-danger">*</span></label>
+            <input type="number" name="cantidad" class="form-control form-control-lg text-center"
+                   min="1" placeholder="0" required>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold small">Motivo</label>
+            <input type="text" name="motivo" class="form-control"
+                   placeholder="Ej: compra, ajuste, devolución...">
+          </div>
+          <div class="d-flex gap-2 pt-3 border-top">
+            <button type="submit" class="btn btn-dark px-4">
+              <i class="bi bi-check-lg me-1"></i>Registrar
+            </button>
+            <a href="{% url 'inventario:movimientos' %}" class="btn btn-outline-secondary px-4">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="campo">
-    <label>Tipo *</label>
-    <select name="tipo" required>
-      <option value="entrada">Entrada</option>
-      <option value="salida">Salida</option>
-    </select>
-  </div>
-  <div class="campo">
-    <label>Cantidad *</label>
-    <input type="number" name="cantidad" min="1" required>
-  </div>
-  <div class="campo">
-    <label>Motivo</label>
-    <input type="text" name="motivo" placeholder="Ej: compra, ajuste, devolución...">
-  </div>
-  <div class="acciones-form">
-    <button type="submit" class="btn btn-primario">Registrar</button>
-    <a href="{% url 'inventario:movimientos' %}" class="btn">Cancelar</a>
-  </div>
-</form>
+</div>
 {% endblock %}

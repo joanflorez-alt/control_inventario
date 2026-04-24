@@ -2,57 +2,117 @@
 {% block title %}Productos{% endblock %}
 
 {% block content %}
-<div class="cabecera-seccion">
-  <h2>Productos</h2>
-  <a href="{% url 'inventario:producto_crear' %}" class="btn btn-primario">+ Nuevo producto</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h4 class="fw-bold mb-0">Productos</h4>
+    <p class="text-muted small mb-0">Gestión del catálogo de productos</p>
+  </div>
+  <a href="{% url 'inventario:producto_crear' %}" class="btn btn-dark">
+    <i class="bi bi-plus-lg me-1"></i>Nuevo producto
+  </a>
 </div>
 
-<form method="get" class="buscador">
-  <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nombre o código...">
-  <select name="categoria">
-    <option value="">Todas las categorías</option>
-    {% for cat in categorias %}
-      <option value="{{ cat.id }}" {% if categoria_id == cat.id|stringformat:"s" %}selected{% endif %}>
-        {{ cat.nombre }}
-      </option>
-    {% endfor %}
-  </select>
-  <button type="submit" class="btn">Buscar</button>
-</form>
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body py-3">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-md-5">
+        <label class="form-label small fw-semibold mb-1">Buscar</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light"><i class="bi bi-search text-muted"></i></span>
+          <input type="text" name="q" value="{{ query }}" class="form-control"
+                 placeholder="Nombre o código de barras...">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label small fw-semibold mb-1">Categoría</label>
+        <select name="categoria" class="form-select">
+          <option value="">Todas las categorías</option>
+          {% for cat in categorias %}
+            <option value="{{ cat.id }}" {% if categoria_id == cat.id|stringformat:"s" %}selected{% endif %}>
+              {{ cat.nombre }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-outline-dark w-100">
+          <i class="bi bi-funnel me-1"></i>Filtrar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Imagen</th>
-      <th>Nombre</th>
-      <th>Categoría</th>
-      <th>Precio</th>
-      <th>Código</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for p in productos %}
-    <tr>
-      <td>
-        {% if p.imagen %}
-          <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}" width="50">
-        {% else %}
-          —
-        {% endif %}
-      </td>
-      <td>{{ p.nombre }}</td>
-      <td>{{ p.categoria.nombre|default:"—" }}</td>
-      <td>${{ p.precio }}</td>
-      <td>{{ p.codigo_barras|default:"—" }}</td>
-      <td>
-        <a href="{% url 'inventario:producto_editar' p.pk %}" class="btn btn-sm">Editar</a>
-        <a href="{% url 'inventario:producto_eliminar' p.pk %}" class="btn btn-sm btn-peligro">Eliminar</a>
-      </td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="6">No hay productos registrados.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead style="background-color: #1a1a2e; color: white;">
+        <tr>
+          <th class="ps-4 py-3" style="width: 70px;">Imagen</th>
+          <th class="py-3">Nombre</th>
+          <th class="py-3">Categoría</th>
+          <th class="py-3">Precio</th>
+          <th class="py-3">Código</th>
+          <th class="py-3 text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in productos %}
+        <tr>
+          <td class="ps-4">
+            {% if p.imagen %}
+              <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}"
+                   class="rounded-2 object-fit-cover" width="48" height="48"
+                   style="object-fit: cover;">
+            {% else %}
+              <div class="rounded-2 bg-light d-flex align-items-center justify-content-center"
+                   style="width:48px; height:48px;">
+                <i class="bi bi-image text-muted"></i>
+              </div>
+            {% endif %}
+          </td>
+          <td>
+            <span class="fw-semibold">{{ p.nombre }}</span>
+            {% if p.descripcion %}
+              <div class="text-muted small">{{ p.descripcion|truncatechars:40 }}</div>
+            {% endif %}
+          </td>
+          <td>
+            {% if p.categoria %}
+              <span class="badge rounded-pill bg-light text-dark border">{{ p.categoria.nombre }}</span>
+            {% else %}
+              <span class="text-muted small">—</span>
+            {% endif %}
+          </td>
+          <td class="fw-semibold">${{ p.precio }}</td>
+          <td>
+            {% if p.codigo_barras %}
+              <code class="small bg-light px-2 py-1 rounded">{{ p.codigo_barras }}</code>
+            {% else %}
+              <span class="text-muted small">—</span>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            <a href="{% url 'inventario:producto_editar' p.pk %}"
+               class="btn btn-sm btn-outline-secondary me-1">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <a href="{% url 'inventario:producto_eliminar' p.pk %}"
+               class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="text-center py-5 text-muted">
+            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+            No hay productos registrados
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

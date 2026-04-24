@@ -2,40 +2,76 @@
 {% block title %}Inventario{% endblock %}
 
 {% block content %}
-<h2>Estado del inventario</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h4 class="fw-bold mb-0">Estado del inventario</h4>
+    <p class="text-muted small mb-0">Control de existencias por producto</p>
+  </div>
+  <a href="{% url 'inventario:movimiento_crear' %}" class="btn btn-dark">
+    <i class="bi bi-plus-lg me-1"></i>Nuevo movimiento
+  </a>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Producto</th>
-      <th>Categoría</th>
-      <th>Cantidad actual</th>
-      <th>Stock mínimo</th>
-      <th>Estado</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for inv in inventarios %}
-    <tr {% if inv.tiene_stock_bajo %}class="fila-alerta"{% endif %}>
-      <td>{{ inv.producto.nombre }}</td>
-      <td>{{ inv.producto.categoria.nombre|default:"—" }}</td>
-      <td>{{ inv.cantidad_actual }}</td>
-      <td>{{ inv.stock_minimo }}</td>
-      <td>
-        {% if inv.tiene_stock_bajo %}
-          ⚠️ Stock bajo
-        {% else %}
-          ✅ OK
-        {% endif %}
-      </td>
-      <td>
-        <a href="{% url 'inventario:inventario_editar' inv.pk %}" class="btn btn-sm">Editar</a>
-      </td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="6">No hay registros de inventario.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead style="background-color: #1a1a2e; color: white;">
+        <tr>
+          <th class="ps-4 py-3">Producto</th>
+          <th class="py-3">Categoría</th>
+          <th class="py-3 text-center">Cantidad actual</th>
+          <th class="py-3 text-center">Stock mínimo</th>
+          <th class="py-3 text-center">Estado</th>
+          <th class="py-3 text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inv in inventarios %}
+        <tr>
+          <td class="ps-4 fw-semibold">{{ inv.producto.nombre }}</td>
+          <td>
+            {% if inv.producto.categoria %}
+              <span class="badge rounded-pill bg-light text-dark border">
+                {{ inv.producto.categoria.nombre }}
+              </span>
+            {% else %}
+              <span class="text-muted small">—</span>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            <span class="fw-bold fs-5 {% if inv.tiene_stock_bajo %}text-danger{% else %}text-success{% endif %}">
+              {{ inv.cantidad_actual }}
+            </span>
+          </td>
+          <td class="text-center text-muted">{{ inv.stock_minimo }}</td>
+          <td class="text-center">
+            {% if inv.tiene_stock_bajo %}
+              <span class="badge bg-danger">
+                <i class="bi bi-exclamation-triangle me-1"></i>Stock bajo
+              </span>
+            {% else %}
+              <span class="badge bg-success">
+                <i class="bi bi-check-circle me-1"></i>OK
+              </span>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            <a href="{% url 'inventario:inventario_editar' inv.pk %}"
+               class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-pencil"></i>
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="text-center py-5 text-muted">
+            <i class="bi bi-archive fs-3 d-block mb-2"></i>
+            No hay registros de inventario
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

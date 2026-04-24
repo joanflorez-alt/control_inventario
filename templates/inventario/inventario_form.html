@@ -2,21 +2,42 @@
 {% block title %}Editar inventario{% endblock %}
 
 {% block content %}
-<h2>Editar inventario — {{ inv.producto.nombre }}</h2>
+<div class="d-flex align-items-center gap-3 mb-4">
+  <a href="{% url 'inventario:inventario' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i>
+  </a>
+  <div>
+    <h4 class="fw-bold mb-0">Editar inventario</h4>
+    <p class="text-muted small mb-0">{{ inv.producto.nombre }}</p>
+  </div>
+</div>
 
-<form method="post" class="formulario">
-  {% csrf_token %}
-  <div class="campo">
-    <label>Cantidad actual</label>
-    <input type="number" name="cantidad_actual" value="{{ inv.cantidad_actual }}" min="0" required>
+<div class="row">
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Cantidad actual</label>
+            <input type="number" name="cantidad_actual" value="{{ inv.cantidad_actual }}"
+                   class="form-control form-control-lg text-center" min="0" required>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold small">Stock mínimo</label>
+            <input type="number" name="stock_minimo" value="{{ inv.stock_minimo }}"
+                   class="form-control form-control-lg text-center" min="0" required>
+            <div class="form-text">Alerta cuando la cantidad llegue a este nivel.</div>
+          </div>
+          <div class="d-flex gap-2 pt-3 border-top">
+            <button type="submit" class="btn btn-dark px-4">
+              <i class="bi bi-check-lg me-1"></i>Guardar
+            </button>
+            <a href="{% url 'inventario:inventario' %}" class="btn btn-outline-secondary px-4">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="campo">
-    <label>Stock mínimo</label>
-    <input type="number" name="stock_minimo" value="{{ inv.stock_minimo }}" min="0" required>
-  </div>
-  <div class="acciones-form">
-    <button type="submit" class="btn btn-primario">Guardar</button>
-    <a href="{% url 'inventario:inventario' %}" class="btn">Cancelar</a>
-  </div>
-</form>
+</div>
 {% endblock %}

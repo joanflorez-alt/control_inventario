@@ -2,32 +2,52 @@
 {% block title %}Categorías{% endblock %}
 
 {% block content %}
-<div class="cabecera-seccion">
-  <h2>Categorías</h2>
-  <a href="{% url 'inventario:categoria_crear' %}" class="btn btn-primario">+ Nueva categoría</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h4 class="fw-bold mb-0">Categorías</h4>
+    <p class="text-muted small mb-0">Organización de productos por categoría</p>
+  </div>
+  <a href="{% url 'inventario:categoria_crear' %}" class="btn btn-dark">
+    <i class="bi bi-plus-lg me-1"></i>Nueva categoría
+  </a>
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for cat in categorias %}
-    <tr>
-      <td>{{ cat.nombre }}</td>
-      <td>{{ cat.descripcion|default:"—" }}</td>
-      <td>
-        <a href="{% url 'inventario:categoria_editar' cat.pk %}" class="btn btn-sm">Editar</a>
-        <a href="{% url 'inventario:categoria_eliminar' cat.pk %}" class="btn btn-sm btn-peligro">Eliminar</a>
-      </td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="3">No hay categorías registradas.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead style="background-color: #1a1a2e; color: white;">
+        <tr>
+          <th class="ps-4 py-3">Nombre</th>
+          <th class="py-3">Descripción</th>
+          <th class="py-3 text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cat in categorias %}
+        <tr>
+          <td class="ps-4 fw-semibold">{{ cat.nombre }}</td>
+          <td class="text-muted small">{{ cat.descripcion|default:"—" }}</td>
+          <td class="text-center">
+            <a href="{% url 'inventario:categoria_editar' cat.pk %}"
+               class="btn btn-sm btn-outline-secondary me-1">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <a href="{% url 'inventario:categoria_eliminar' cat.pk %}"
+               class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3" class="text-center py-5 text-muted">
+            <i class="bi bi-grid fs-3 d-block mb-2"></i>
+            No hay categorías registradas
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}
