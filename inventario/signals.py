@@ -12,3 +12,4 @@ def actualizar_existencias(sender, instance, created, **kwargs):
         elif instance.tipo == 'salida':
             inv.cantidad_actual = max(0, inv.cantidad_actual - instance.cantidad)
         inv.save()
+        
