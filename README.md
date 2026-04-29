@@ -8,19 +8,19 @@ Sistema web de gestión de inventario desarrollado con Django, orientado a peque
 ![Dashboard](docs/images/dashboard.png)
 
 ### login
-![Productos](docs/images/login.png)
+![Login](docs/images/login.png)
 
 ### Productos
 ![Productos](docs/images/productos.png)
 
 ### nuevo Producto
-![Productos](docs/images/nuevo_producto.png)
+![nuevo_producto](docs/images/nuevo_producto.png)
 
 ### Movimientos
 ![Movimientos](docs/images/movimientos_inventario.png)
 
 ### Registro movimiento
-![Productos](docs/images/registro_movimiento.png)
+![Registro_movimiento](docs/images/registro_movimiento.png)
 
 
 
@@ -45,41 +45,8 @@ Imágenes	Pillow
 Control de Versiones	Git
 
 Estructura del Proyecto
-inventario-project/
-├── manage.py                  # CLI de administración Django
-├── requirements.txt           # Dependencias del proyecto
-├── README.md
-├── LICENSE
-│
-├── config/                    # Configuración principal del proyecto
-│   ├── settings.py            # Configuración global (BD, idioma es-co, zona America/Bogota)
-│   ├── urls.py                # Enrutador principal de URLs
-│   ├── wsgi.py
-│   └── asgi.py
-│
-├── inventario/                # Aplicación principal
-│   ├── models.py              # Modelos: Categoria, Producto, Inventario, Movimiento, RegistroAccion
-│   ├── views.py               # Lógica de negocio y manejo de solicitudes
-│   ├── urls.py                # URLs de la aplicación
-│   ├── admin.py               # Configuración del panel administrativo
-│   ├── signals.py             # Señales: actualización automática de stock post-movimiento
-│   ├── apps.py                # Configuración de la app
-│   ├── tests.py               # Pruebas unitarias
-│   └── migrations/            # Migraciones de base de datos
-│
-├── templates/inventario/      # Plantillas HTML
-│   ├── login.html
-│   ├── dashboard.html
-│   ├── producto_form.html
-│   ├── inventario.html
-│   ├── movimientos.html
-│   └── acciones.html
-│
-├── static/                    # Archivos estáticos
-│   ├── css/estilos.css
-│   └── js/
-│
-└── media/productos/           # Imágenes subidas por usuarios
+
+![directorios](docs/images/directorios.png)
 
 # Instalación y Configuración
 
